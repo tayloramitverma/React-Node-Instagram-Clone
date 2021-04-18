@@ -19,10 +19,10 @@ module.exports = (req,res,next) =>{
         User.findById(_id)
         .then(userdata=>{
             req.user = userdata
+            next()
         })
         .catch(err=>{
             res.status(422).json({message:err})
         })
-        next()
     })
 }
