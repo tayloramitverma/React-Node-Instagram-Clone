@@ -1,21 +1,26 @@
 const express = require('express');
 const app = express();
 const PORT = 5000;
+const mongoose = require('mongoose');
+const {MONGOURI} = require('./keys');
 
-const myCustomMiddleware = (req,res,next) => {
-    console.log("Middleware executed now!");
-    next()
-}
-
-//app.use(myCustomMiddleware);
-
-app.get('/', (req, res)=>{
-    res.send("Hello My Node World!")
+require('./models/user');
+app.use(express.json())
+app.use(require('./router/auth'))
+//mongodb database connection
+mongoose.connect(MONGOURI, {
+    useNewUrlParser: true, 
+    useUnifiedTopology: true 
 });
 
-app.get('/aboutme', myCustomMiddleware, (req, res)=>{
-    res.send("Hi, I'm Taylor!")
+mongoose.connection.on('connected',()=>{
+    console.log('Connected to the mongodb database!')
 });
+
+mongoose.connection.on('error', (err)=>{
+    console.log("Mongodb database connection error", err)
+});
+
 
 app.listen(PORT, ()=>{
     console.log("Server is running on "+PORT);
