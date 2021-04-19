@@ -7,14 +7,15 @@ const Post = mongoose.model("Post")
 const requiredLogin = require('../middleware/requiredLogin')
 
 router.post('/createpost', requiredLogin, (req,res)=>{
-    const {title, body} = req.body;
-    if(!title || !body){
+    const {title, body, photo} = req.body;
+    if(!title || !body || !photo){
        return res.status(422).json({message:"Please add title or body!"})
     }
 
     const post = new Post({
         title,
         body,
+        photo,
         postedBy:req.user
     })
 

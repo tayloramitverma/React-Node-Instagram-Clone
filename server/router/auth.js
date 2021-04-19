@@ -9,12 +9,12 @@ const { JWT_SECRET } = require('../keys')
 router.post('/signup', (req,res)=>{
     const {name,email,password} = req.body;
     if(!name || !email || !password){
-        return res.status(422).json({message:"All fields are required!"})
+        return res.status(422).json({error:"All fields are required!"})
     }
     User.findOne({email:email})
     .then((savedUser)=>{
-        if(!savedUser){
-            return res.status(422).json({message:"User already existing!"})
+        if(savedUser){
+            return res.status(422).json({error:"User already existing!"})
         }
         bcrypt.hash(password, 12)
         .then(hashedPassword=>{
@@ -30,46 +30,46 @@ router.post('/signup', (req,res)=>{
                 res.json({message:"User saved successfully!"})
             })
             .catch(err=>{
-                res.status(422).json({message:err})
+                res.status(422).json({error:err})
             })
         })
         .catch(err=>{
-            res.status(422).json({message:err})
+            res.status(422).json({error:err})
         })
         
     })
     .catch(err=>{
-        res.status(422).json({message:err})
+        res.status(422).json({error:err})
     })
 })
 
 router.post('/signin', (req,res)=>{
     const {email, password} = req.body;
     if(!email || !password){
-        return res.status(422).json({message:"Please provide email or password!"})
+        return res.status(422).json({error:"Please provide email or password!"})
     }
 
     User.findOne({email:email})
     .then(savedUser=>{
         if(!savedUser){
-            return res.status(422).json({message:"Invalid email or password!"})
+            return res.status(422).json({error:"Invalid email or password!"})
         }
         bcrypt.compare(password, savedUser.password)
         .then(doMatch=>{
             if(doMatch){
                 const token = jwt.sign({_id:savedUser._id}, JWT_SECRET)
-
-                res.json({message:"Successfully signed In!", token:token})
+                const {_id, name, email} = savedUser
+                res.json({message:"Successfully signed In!", token:token, user:{_id, name, email}})
             }else{
-                res.status(422).json({message:"Invalid email or password!"})
+                res.status(422).json({error:"Invalid email or password!"})
             }
         })
         .catch(err=>{
-            res.status(422).json({message:err})
+            res.status(422).json({error:err})
         })
     })
     .catch(err=>{
-        res.status(422).json({message:err})
+        res.status(422).json({error:err})
     })
 })
 
