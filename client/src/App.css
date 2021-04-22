@@ -49,3 +49,13 @@
     padding: 20px;
     text-align: center;
 }
+
+.delete-post {
+    float:right;
+}
+
+h5.posted-name {
+    padding: 9px 6px;
+    line-height: 20px;
+    margin: 0;
+}
