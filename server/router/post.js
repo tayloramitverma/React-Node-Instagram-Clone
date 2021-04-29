@@ -32,7 +32,7 @@ router.get('/userposts', requiredLogin, (req,res)=>{
 
     Post.find({postedBy:req.user._id})
     .sort( { _id : -1} )
-    .populate("postedBy","_id name")
+    .populate("postedBy","_id name photo")
     .then(result=>{
         res.json({message:"All User Posts!",posts:result})
     })
@@ -46,7 +46,7 @@ router.get('/posts', requiredLogin, (req,res)=>{
 
     Post.find()
     .sort( { _id : -1} )
-    .populate("postedBy","_id name")
+    .populate("postedBy","_id name photo")
     .populate("comments.postedBy", "_id name")
     .then(result=>{
         res.json({message:"All Posts!",posts:result})
@@ -67,7 +67,7 @@ router.put('/like', requiredLogin, (req, res)=>{
     {
         new:true
     })
-    .populate("postedBy","_id name")
+    .populate("postedBy","_id name photo")
     .populate("comments.postedBy", "_id name")
     .exec((err,result)=>{
         if(err){
@@ -87,7 +87,7 @@ router.put('/unlike', requiredLogin, (req, res)=>{
     {
         new:true
     })
-    .populate("postedBy","_id name")
+    .populate("postedBy","_id name photo")
     .populate("comments.postedBy", "_id name")
     .exec((err,result)=>{
         if(err){
@@ -110,7 +110,7 @@ router.put('/comment', requiredLogin, (req, res)=>{
     {
         new:true
     })
-    .populate("postedBy","_id name")
+    .populate("postedBy","_id name photo")
     .populate("comments.postedBy", "_id name")
     .exec((err,result)=>{
         if(err){

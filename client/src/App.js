@@ -1,13 +1,16 @@
 import React, {useEffect, createContext, useReducer, useContext} from 'react'
 import './App.css'
 
-import Navbar from './components/Navbar'
+import Navbar from './components/container/Navbar'
+import Footer from './components/container/Footer'
 import {BrowserRouter, Route, Switch, useHistory} from 'react-router-dom'
 import Home from './components/screens/Home'
 import Profile from './components/screens/Profile'
 import CreatePost from './components/screens/CreatePost'
 import Signin from './components/screens/Signin'
 import Signup from './components/screens/Signup'
+import UserProfile from './components/screens/UserProfile'
+import UpdateProfile from './components/screens/UpdateProfile'
 import {reducer, initialState} from './reducers/userReducer'
 
 export const UserContext = createContext();
@@ -34,16 +37,22 @@ const Routing = () => {
         <Route exact path="/">
             <Home />
         </Route>
-        <Route path="/profile">
+        <Route exact path="/profile">
             <Profile />
         </Route>
-        <Route path="/create">
+        <Route exact path="/update-profile">
+            <UpdateProfile />
+        </Route>
+        <Route exact path="/create">
             <CreatePost />
         </Route>
-        <Route path="/signin">
+        <Route exact path="/profile/:userid">
+            <UserProfile />
+        </Route>
+        <Route exact path="/signin">
             <Signin />
         </Route>
-        <Route path="/signup">
+        <Route exact path="/signup">
             <Signup />
         </Route>
       </Switch>
@@ -58,6 +67,7 @@ function App() {
       <BrowserRouter>
         <Navbar/>
         <Routing/>
+        <Footer />
       </BrowserRouter>
     </UserContext.Provider>
   );

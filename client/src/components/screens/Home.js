@@ -1,6 +1,8 @@
 import React, {useState, useEffect, useContext} from 'react'
+import {Link} from 'react-router-dom'
 import M from 'materialize-css'
 import {UserContext} from '../../App'
+const defaultImg = require('../../assets/img/user-placeholder.png');
 
 const Home = () => {
     const [posts, setPosts] = useState([])
@@ -141,16 +143,29 @@ const Home = () => {
                         return (
                             <div key={index} className="card home-card">
                                 <h5 className="posted-name">
-                                    {item.postedBy.name} 
-                                    {item.postedBy._id.toString() === state._id.toString() &&
-                                        <i 
-                                            className="material-icons delete-post" 
-                                            onClick={()=>deletePost(item._id)}
-                                        >
-                                            delete
-                                        </i>
+                                    {item.postedBy.photo ?
+                                    <img 
+                                        alt={item.postedBy.name}
+                                        src={item.postedBy.photo}
+                                        style={{width:'25px',height:'25px',borderRadius:'50%'}}
+                                    />
+                                    :
+                                    <img 
+                                        alt={item.postedBy.name}
+                                        src={defaultImg.default}
+                                        style={{width:'25px',height:'25px',borderRadius:'50%'}}
+                                    />
                                     }
+                                    <Link to={'/profile/'+item.postedBy._id} >{item.postedBy.name} </Link>
                                 </h5>
+                                {item.postedBy._id.toString() === state._id.toString() &&
+                                    <i 
+                                        className="material-icons delete-post right" 
+                                        onClick={()=>deletePost(item._id)}
+                                    >
+                                    delete
+                                    </i>
+                                }
                                 <div className="card-image">
                                     <img 
                                         alt={item.title}
@@ -196,6 +211,7 @@ const Home = () => {
                                     <form onSubmit={(e)=>{
                                         e.preventDefault()
                                         commentPost(e.target[0].value, item._id)
+                                        e.target[0].value='';
                                     }}>
                                         <input
                                             type="text"

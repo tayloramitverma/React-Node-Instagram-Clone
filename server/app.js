@@ -31,6 +31,7 @@ require('./models/post')
 app.use(express.json())
 app.use(require('./router/auth'))
 app.use(require('./router/post'))
+app.use('/api', require('./router/user'))
 
 app.listen(PORT, ()=>{
     console.log("Server is running on "+PORT)

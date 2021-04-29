@@ -1,6 +1,6 @@
 import React, {useContext} from 'react'
 import {Link, useHistory} from 'react-router-dom'
-import {UserContext} from '../App'
+import {UserContext} from '../../App'
 
 const Navbar = () => {
 
@@ -33,8 +33,8 @@ const Navbar = () => {
   }
 
   return(
-    <nav className="light-blue darken-4">
-      <div className="nav-wrapper">
+    <nav className="light-blue darken-4 header-section">
+      <div className="nav-wrapper container">
         <Link to={state?'/':'/signin'}className="brand-logo left">Instagram</Link>
         <ul id="nav-mobile" className="right">
           {renderList()}

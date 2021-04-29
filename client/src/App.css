@@ -41,6 +41,12 @@
     max-width: 500px;
     height: max-content;
     margin: 26px auto;
+    position: relative;
+}
+
+.posted-name a {
+    margin-left: 6px;
+    font-size: 17px;
 }
 
 .input-field{
@@ -51,11 +57,30 @@
 }
 
 .delete-post {
-    float:right;
+    position: absolute;
+    right: 4px;
+    top: 8px;
 }
 
 h5.posted-name {
     padding: 9px 6px;
     line-height: 20px;
     margin: 0;
+    display: flex;
+}
+
+.edit-profile{
+    position: absolute;
+    left: 0;
+    cursor: pointer;
+}
+.profile-image{
+    position: relative;
+}
+
+.page-footer {
+    padding: 0 !important;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
