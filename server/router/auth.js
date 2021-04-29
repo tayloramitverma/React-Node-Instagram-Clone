@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
 const User = mongoose.model("User")
 const { JWT_SECRET } = require('../keys')
+const requiredLogin = require('../middleware/requiredLogin')
 
 router.post('/signup', (req,res)=>{
     const {name,email,password} = req.body;
@@ -58,8 +59,8 @@ router.post('/signin', (req,res)=>{
         .then(doMatch=>{
             if(doMatch){
                 const token = jwt.sign({_id:savedUser._id}, JWT_SECRET)
-                const {_id, name, email} = savedUser
-                res.json({message:"Successfully signed In!", token:token, user:{_id, name, email}})
+                const {_id, name, email, bio, photo, follower, following} = savedUser
+                res.json({message:"Successfully signed In!", token:token, user:{_id, name, email, bio, photo, follower, following}})
             }else{
                 res.status(422).json({error:"Invalid email or password!"})
             }
@@ -71,6 +72,29 @@ router.post('/signin', (req,res)=>{
     .catch(err=>{
         res.status(422).json({error:err})
     })
+})
+
+router.put('/update-profile', requiredLogin, (req,res)=>{
+    const {name, bio, photo} = req.body;
+
+    if(!name){
+       return res.status(422).json({error:"Please add name!"})
+    }
+
+    User.findByIdAndUpdate(req.user._id,{
+        name,
+        bio,
+        photo
+    },
+    {new: true})
+    .select("-password")
+    .exec((err,result)=>{
+        if(err){
+             return res.status(422).json({error:err})
+        }
+         res.json({message:"success",result:result})
+    })
+
 })
 
 module.exports = router;
