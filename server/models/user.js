@@ -21,7 +21,9 @@ const UserSchema = new mongoose.Schema({
     },
     bio:{
         type:String
-    }
+    },
+    resetToken:String,
+    expireToken:Date
 });
 
 mongoose.model("User", UserSchema);
