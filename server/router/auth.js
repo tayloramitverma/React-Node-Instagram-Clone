@@ -4,8 +4,16 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
 const User = mongoose.model("User")
-const { JWT_SECRET } = require('../keys')
+const { JWT_SECRET } = require('../config/keys')
 const requiredLogin = require('../middleware/requiredLogin')
+const nodemailer = require('nodemailer')
+const sandgridTransport = require('nodemailer-sendgrid-transport')
+
+const transpoter = nodemailer.createTransport(sandgridTransport({
+    auth:{
+        api_key:"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"
+    }
+}))
 
 router.post('/signup', (req,res)=>{
     const {name,email,password} = req.body;
@@ -28,6 +36,12 @@ router.post('/signup', (req,res)=>{
     
             user.save()
             .then((user)=>{
+                transpoter.sendMail({
+                    to:user.email,
+                    from:"no-reply@beingidea.com",
+                    subject:"Signup success on Taylor Instagram!",
+                    html:'<h1>Welcome to Tyalor Instagram</h1>'
+                })
                 res.json({message:"User saved successfully!"})
             })
             .catch(err=>{
