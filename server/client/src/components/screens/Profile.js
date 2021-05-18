@@ -9,7 +9,7 @@ const Profile = () => {
     const [posts, setPosts] = useState('')
 
     useEffect(()=>{
-        fetch('http://localhost:5000/api/user/'+JSON.parse(localStorage.getItem("user"))._id,{
+        fetch('/api/user/'+JSON.parse(localStorage.getItem("user"))._id,{
             headers:{
                 "Content-Type":"application/json",
                 "Authorization":"Bearer "+localStorage.getItem("jwt")

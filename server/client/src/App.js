@@ -9,6 +9,8 @@ import Profile from './components/screens/Profile'
 import CreatePost from './components/screens/CreatePost'
 import Signin from './components/screens/Signin'
 import Signup from './components/screens/Signup'
+import ResetPassword from './components/screens/ResetPassword'
+import UpdatePassword from './components/screens/UpdatePassword'
 import UserProfile from './components/screens/UserProfile'
 import UpdateProfile from './components/screens/UpdateProfile'
 import {reducer, initialState} from './reducers/userReducer'
@@ -27,7 +29,8 @@ const Routing = () => {
         history.push('/')
       }
     }else{
-      history.push('/signin')
+      if(!history.location.pathname === '/reset-password' || !history.location.pathname === '/update-password')
+        history.push('/signin')
     }
   },[history,dispatch])
 
@@ -54,6 +57,12 @@ const Routing = () => {
         </Route>
         <Route exact path="/signup">
             <Signup />
+        </Route>
+        <Route exact path="/reset-password">
+            <ResetPassword />
+        </Route>
+        <Route exact path="/update-password/:token">
+            <UpdatePassword />
         </Route>
       </Switch>
     </>
